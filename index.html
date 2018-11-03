@@ -2,38 +2,53 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Pizza Variables - Unsolved</title>
+    <title>Word Guess Game</title>
   </head>
   <body>
 
     <script type="text/javascript">
+        var guessCount = 10;
+        var winCount = 0;
+        var guess = "";
+        var letterHistory = [];
+        var wordBank = ["Switch", "PS4", "XBone", "PC", "Mobile", "Tablet"];
+        var start = confirm("Press any key to get started!");
+        var theGame = [];
+        var initGame = "";
+        var i = 0;
+        while (theGame != null) {
+            document.write("Wins: " + winCount);
+            initGame = wordBank[Math.floor(Math.random() * wordBank.length)];
+            document.write(initGame);
+            while (i < initGame.length) {
+                theGame.push("_");
+                i++;
+            };
+            document.write(theGame);
 
-    // Instructions:
-    // Create 3 variables. One called: "name", one called "pizzaCount", and one called "isHungry".
-    // The name variable should be set to your name.
-    // The pizzaCount variable should be set to a number.
-    // The isHungry variable should be set to true or false.
-
-    // FILL IN YOUR CODE HERE
-    // =============================================
-    var name = "Sieu";
-    var pizzaCount = 10000;
-    var isHungry = false;
-
-    // ==============================================
-
-
-    // Don't touch this code :-)
-    var totalCost = pizzaCount * 5.00;
-
-    alert("Welcome: " + name);
-
-    alert("Pizzas cost $5 each");
-
-    alert("Your total is: $" + totalCost);
-
-    alert("Still Hungry: " + isHungry);
-
+            guess = prompt("Guess a letter: ");
+            if (initGame.indexOf(guess)) {
+                for (var j = 0; j < initGame.length; j++ ) {
+                    if (guess == initGame[j]) {
+                        theGame[j] = initGame[j];
+                    };
+                }
+            }
+            else {
+                alert("Guess again!");
+            }
+            letterHistory.push(guess);
+            guessCount++;
+            document.write("Letters Guessed: " + letterHistory);
+        
+            if (theGame.length === null) {
+                alert("Victory!");
+                winCount++;
+            }
+            else {
+                alert("Not good enough.");
+            }
+        }
     </script>
 
   </body>

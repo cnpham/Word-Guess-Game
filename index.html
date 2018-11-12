@@ -1,55 +1,84 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
   <head>
     <meta charset="UTF-8">
     <title>Word Guess Game</title>
   </head>
+
   <body>
+
+    <div>
+        <p id="start-text">Press any key to get started!</p>
+        <p id="wins-text"></p>
+        <p id="history-text"></p>
+        <p id="guess-text"></p>
+        <p id="guesscount-text"></p>
+        <p id="game-text"></p>
+    </div>
 
     <script type="text/javascript">
         var guessCount = 10;
         var winCount = 0;
-        var guess = "";
         var letterHistory = [];
-        var wordBank = ["Switch", "PS4", "XBone", "PC", "Mobile", "Tablet"];
-        var start = confirm("Press any key to get started!");
-        var theGame = [];
-        var initGame = "";
-        var i = 0;
-        while (theGame != null) {
-            document.write("Wins: " + winCount);
-            initGame = wordBank[Math.floor(Math.random() * wordBank.length)];
-            document.write(initGame);
-            while (i < initGame.length) {
-                theGame.push("_");
-                i++;
-            };
-            document.write(theGame);
 
-            guess = prompt("Guess a letter: ");
+        // list of words for the game
+        var wordBank = ["switch", "psfour", "xbone", "pc", "mobile", "tablet"];
+        var theGame = [];
+        var initGame = wordBank[Math.floor(Math.random() * wordBank.length)];
+        var gameCheck = 0;
+        
+        for (var i = 0; i < initGame.length; i++) {
+            theGame[i] = "_ ";
+        };
+
+        var startText = document.getElementById("start-text");
+        var winsText = document.getElementById("wins-text");
+        var historyText = document.getElementById("history-text")
+        var guesscountText = document.getElementById("guesscount-text");
+        var guessText = document.getElementById("guess-text");
+        var gameText = document.getElementById("game-text");
+        
+        // This function is run whenever the user presses a key.
+        document.onkeyup = function(event) {
+            // Determines which key was pressed.
+            var guess = event.key;
+
+            // add guess to the history and minus the guess count
+            letterHistory.push(guess);
+            guessCount--;
+
+            // check for the letter in the selected word and replace theGame _'s accordingly
             if (initGame.indexOf(guess)) {
-                for (var j = 0; j < initGame.length; j++ ) {
-                    if (guess == initGame[j]) {
-                        theGame[j] = initGame[j];
-                    };
+                for (var j = 0; j < initGame.length + 1; j++ ) {
+                    if (initGame[j] === guess) {
+                        theGame[j] = guess;
+                        gameCheck++;
+                    }
                 }
             }
-            else {
-                alert("Guess again!");
-            }
-            letterHistory.push(guess);
-            guessCount++;
-            document.write("Letters Guessed: " + letterHistory);
-        
-            if (theGame.length === null) {
+
+            if (gameCheck.length === initGame.length) {
                 alert("Victory!");
                 winCount++;
+                guessCount = 10;
             }
-            else {
-                alert("Not good enough.");
+                
+            if (guessCount === 0 ) {
+                alert("Not good enough. The word was " + initGame);
+                guessCount = 10;
             }
-        }
-    </script>
+        
+            // hide directions
+            startText.textContent = "";
 
+            // score and game display
+            winsText.textContent = "Wins: " + winCount;
+            guesscountText.textContent = "Guesses Left: " + guessCount;
+            historyText.textContent = "Letters used: " + letterHistory.join(" ");
+            guessText.textContent = "Current Guess: " + guess;
+            gameText.textContent = "Target: " + theGame.join("");
+        };
+    </script>
   </body>
 </html>
